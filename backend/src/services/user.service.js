@@ -39,13 +39,7 @@ class UserService {
     }
     async deleteUser(email) {
         try {
-            const user = await User.findOne({ where: { email } })
-            if (user) {
-                const result = await user.destroy();
-                return result;
-            } else {
-                return 0;
-            }
+             await User.destroy({where:{email}})
         } catch (error) {
             console.log(error)
         }
@@ -55,7 +49,7 @@ class UserService {
             const { email, password } = body;
             const user = await User.findOne({ where: { email } })
             if (user) {
-                const match = bcrypt.compare(password, user.password);
+                const match = await bcrypt.compare(password, user.password);
                 if (match) {
                     const token = jsonwebtoken.sign({ id: user.email }, process.env.SECRET)
                     return token;
