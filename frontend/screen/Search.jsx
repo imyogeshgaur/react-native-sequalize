@@ -85,7 +85,8 @@ const styles = StyleSheet.create({
         marginRight: "0.2rem",
         marginLeft: "0.2rem",
         borderRadius: "3px",
-        height: 30
+        height: 30,
+        outlineStyle: 'none'
     },
     subhead1: {
         marginLeft: "0.2rem",

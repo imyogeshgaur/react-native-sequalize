@@ -1,11 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Alert, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, Modal } from 'react-native';
 
-const Home = ({ navigation }) => {
+const SignUp = () => {
     const [name, setname] = useState("")
     const [email, setemail] = useState("")
     const [password, setpassword] = useState("")
+    const [visible, setvisible] = useState(false)
     const upsertUser = async () => {
         try {
             const res = await fetch("http://localhost:5000/user/upsert", {
@@ -18,12 +19,12 @@ const Home = ({ navigation }) => {
             })
             const data = await res.json();
             if (data) {
-                Alert.alert("Cool :)", "Requst Completed !!!")
+                Alert.alert("Cool :)", "Request Completed !!!")
                 setname("")
                 setemail("")
                 setpassword("")
             } else {
-                Alert.alert("Oops :(", "Requst Not Completed !!!")
+                Alert.alert("Oops :(", "Request Not Completed !!!")
                 setname("")
                 setemail("")
                 setpassword("")
@@ -33,40 +34,37 @@ const Home = ({ navigation }) => {
             console.log(error)
         }
     }
-    const getRoute = () => {
-        navigation.navigate("Search User")
-    }
-    const deleteRoute = () => {
-        navigation.navigate("Delete User")
-    }
     return (
         <>
-            <View style={styles.card}>
-                <Text style={styles.heading}>Create / Update User</Text>
-                <View>
-                    <Text style={styles.subhead1}>Enter Name</Text>
-                    <TextInput style={styles.inputs} value={name} onChange={(e) => setname(e.target.value)}  />
-                    <Text style={styles.subhead2}>Enter Email</Text>
-                    <TextInput style={styles.inputs} textContentType={"emailAddress"} value={email} onChange={(e) => setemail(e.target.value)} />
-                    <Text style={styles.subhead2}>Enter Password</Text>
-                    <TextInput style={styles.inputs} secureTextEntry={true} value={password} onChange={(e) => setpassword(e.target.value)} />
-                    <TouchableOpacity style={styles.button} onPress={upsertUser}>
-                        <Text style={{ color: "white", textAlign: "center" }}>Submit</Text>
+          
+            <TouchableOpacity style={styles.button} onPress={setvisible(true)}>
+                        <Text style={{ color: "white", textAlign: "center" }}>Open Model</Text>
                     </TouchableOpacity>
-                </View>
-                <View style={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>
-                    <TouchableOpacity style={styles.button2} onPress={getRoute}>
-                        <Text style={{ color: "blue", textAlign: "center" }}>Get User</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button3} onPress={deleteRoute}>
-                        <Text style={{ color: "red", textAlign: "center" }}>Delete User</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-            <StatusBar style="auto" />
+                <Modal
+                    animationType={"fade"}
+                    transparent={false}
+                    visible={visible}
+                >
+                    <View style={styles.card}>
+                        <Text style={styles.heading}>Create / Update User</Text>
+                        <View>
+                            <Text style={styles.subhead1}>Enter Name</Text>
+                            <TextInput style={styles.inputs} value={name} onChange={(e) => setname(e.target.value)} />
+                            <Text style={styles.subhead2}>Enter Email</Text>
+                            <TextInput style={styles.inputs} textContentType={"emailAddress"} value={email} onChange={(e) => setemail(e.target.value)} />
+                            <Text style={styles.subhead2}>Enter Password</Text>
+                            <TextInput style={styles.inputs} secureTextEntry={true} value={password} onChange={(e) => setpassword(e.target.value)} />
+                            <TouchableOpacity style={styles.button} onPress={upsertUser}>
+                                <Text style={{ color: "white", textAlign: "center" }}>Submit</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    <StatusBar style="auto" />
+                </Modal>
         </>
     )
 }
+
 const styles = StyleSheet.create({
     main: {
         flex: 1,
@@ -116,8 +114,8 @@ const styles = StyleSheet.create({
         padding: "0.3rem",
         borderRadius: "3px",
         height: 30,
-        marginLeft:"0.3rem",
-        marginRight:"0.3rem"
+        marginLeft: "0.3rem",
+        marginRight: "0.3rem"
     },
     button2: {
         marginTop: "3rem",
@@ -134,5 +132,4 @@ const styles = StyleSheet.create({
         height: 30
     }
 });
-
-export default Home
+export default SignUp

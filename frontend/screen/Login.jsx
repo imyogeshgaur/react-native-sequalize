@@ -5,6 +5,9 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'reac
 const Login = ({ navigation }) => {
     const [email, setemail] = useState("")
     const [password, setpassword] = useState("")
+    const SignUpUser = async () => {
+        navigation.navigate("Sign Up")
+    }
     const LoginUser = async () => {
         try {
             const res = await fetch("http://localhost:5000/user/login", {
@@ -36,11 +39,18 @@ const Login = ({ navigation }) => {
                 <Text style={styles.heading}>Login Here</Text>
                 <View>
                     <Text style={styles.subhead1}>Enter Email</Text>
-                    <TextInput style={styles.inputs} value={email} onChange={(e) => setemail(e.target.value)} />
+                    <TextInput 
+                        style={styles.inputs} 
+                        value={email} 
+                        onChange={(e) => setemail(e.target.value)}
+                    />
                     <Text style={styles.subhead2}>Enter Password</Text>
                     <TextInput style={styles.inputs} secureTextEntry={true} value={password} onChange={(e) => setpassword(e.target.value)} />
                     <TouchableOpacity style={styles.button} onPress={LoginUser}>
-                        <Text style={{ color: "white", textAlign: "center" }}>Submit</Text>
+                        <Text style={{ color: "white", textAlign: "center" }}>Log In</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.button2} onPress={SignUpUser}>
+                        <Text style={{ color: "black", textAlign: "center" }}>Sign Up</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -68,7 +78,7 @@ const styles = StyleSheet.create({
     heading: {
         fontSize: "30px",
         textAlign: "center",
-        marginBottom: "3rem",
+        marginBottom: "1rem",
         color: "white"
     },
     inputs: {
@@ -77,7 +87,8 @@ const styles = StyleSheet.create({
         marginRight: "0.2rem",
         marginLeft: "0.2rem",
         borderRadius: "3px",
-        height: 30
+        height: 30,
+        outlineStyle: 'none'
     },
     subhead1: {
         marginLeft: "0.2rem",
@@ -91,8 +102,17 @@ const styles = StyleSheet.create({
         color: "white"
     },
     button: {
-        marginTop: "3rem",
+        marginTop: "2rem",
         backgroundColor: "red",
+        padding: "0.3rem",
+        marginLeft: "0.2rem",
+        marginRight: "0.2rem",
+        borderRadius: "3px",
+        height: 30
+    },
+    button2: {
+        marginTop: "1rem",
+        backgroundColor: "rgb(146, 247, 132)",
         padding: "0.3rem",
         marginLeft: "0.2rem",
         marginRight: "0.2rem",
